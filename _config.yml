@@ -13,19 +13,20 @@
 # you will see them accessed via {{ site.title }}, {{ site.email }}, and so on.
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
-title: Ted's cyber capabilities lab
+title: RootkiTED
 email: theodore.thobane@gmail.com
-description: >- # this means to ignore newlines until "baseurl:"
-  Welcome to my personal blog. I talk reverse-engineering,
-  exploit development and all things malware development here. 
-baseurl: "/blog" # the subpath of your site, e.g. /blog
-url: "https://0x0l0rd.github.io" # the base hostname & protocol for your site, e.g. http://example.com
-github_username:  0x0L0RD
+description: Reverse engineering, binary exploitation, and malware research notes.
+baseurl: "/blog"
+url: "https://rootkited.github.io"
+github_username: rootkiTED
 
 # Build settings
 theme: minima
 plugins:
   - jekyll-feed
+
+permalink: /notes/:title/
+show_excerpts: true
 
 # Exclude from processing.
 # The following items will not be processed, by default. Create a custom list

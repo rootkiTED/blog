@@ -1,0 +1,30 @@
+---
+layout: default
+---
+<section class="intro" aria-labelledby="intro-title">
+  <p class="eyebrow">Security research journal</p>
+  <h1 id="intro-title">Pulling systems apart<br>to understand them.</h1>
+  <p class="lede">Practical notes on reverse engineering, binary exploitation, and malware research—documented from first observation to working result.</p>
+</section>
+<section class="notes" aria-labelledby="notes-title">
+  <div class="section-heading">
+    <h2 id="notes-title">Latest field notes</h2>
+    <span>{{ site.posts | size }} entries</span>
+  </div>
+  <ol class="post-list">
+    {% for post in site.posts %}
+      <li>
+        <article class="post-card">
+          <a class="post-link" href="{{ post.url | relative_url }}" aria-label="Read {{ post.title | escape }}"></a>
+          <div class="post-meta">
+            <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%d %b %Y" }}</time>
+            <span>{{ post.categories | first | replace: '-', ' ' }}</span>
+          </div>
+          <h3>{{ post.title }}</h3>
+          <p>{{ post.excerpt | strip_html | truncatewords: 28 }}</p>
+          <span class="read-more" aria-hidden="true">Read note <span>→</span></span>
+        </article>
+      </li>
+    {% endfor %}
+  </ol>
+</section>

@@ -27,10 +27,10 @@ Easy mode first: [online disassembler](https://defuse.ca/online-x86-assembler.ht
 The result is legible.
 
 __x86__:
-![](https://0x0l0rd.github.io/blog/assets/img/RE1/1.png)
+![]({{ site.baseurl }}/assets/img/RE1/1.png)
 
 __x64__:
-![](https://0x0l0rd.github.io/blog/assets/img/RE1/2.png)
+![]({{ site.baseurl }}/assets/img/RE1/2.png)
 
 While both x86 and x86_64 seem to suggest similar concepts, x86_64 seems to be the intended architecture. Sure, there’s a NOP with an operand in the x64 version, but in the x86 version, for one, there's a decrement of AX, but neither the RAX (nor the EAX) register are set prior.
 Thus, I’ll start with the x64 assembly. If I make no progress in finding out how to decode the flag, I’ll come back to x86. Moreover, I think the value RCX must contain might be difficult to ascertain but I will come back to it once I understand what the algorithm is doing. 
@@ -41,7 +41,7 @@ I'm going to assume that RCX has the address of the first byte in the flag array
 
 Beyond that, it’s clear that I’ve got two loops (nested) to look at. I’ll focus on the inner loop first.
 
-![](https://0x0l0rd.github.io/blog/assets/img/RE1/3.png)
+![]({{ site.baseurl }}/assets/img/RE1/3.png)
 
 At RSP+0x8, we have 0x6f9caea4 loaded into memory. The code in the above screenshot translates to: 
 
@@ -137,8 +137,8 @@ with open("bin_file", "wb+") as f:
     f.write(data)
 ```
 
-![](https://0x0l0rd.github.io/blog/assets/img/RE1/5_1.png)
-![](https://0x0l0rd.github.io/blog/assets/img/RE1/5_2.png)
+![]({{ site.baseurl }}/assets/img/RE1/5_1.png)
+![]({{ site.baseurl }}/assets/img/RE1/5_2.png)
 
 A sanity check with Ghidra corroborates the information I have. The decompiled code hardly provides new information, so I’ll ignore it for now.
 
@@ -229,7 +229,7 @@ Then we need to call that function after the inner loop has finished execution:
 
 Finally, when compiled and executed, the result yields the flag.
 
-![](https://0x0l0rd.github.io/blog/assets/img/RE1/6.png)
+![]({{ site.baseurl }}/assets/img/RE1/6.png)
 
 Deriving the solution in C from here is relatively easy.  
 
