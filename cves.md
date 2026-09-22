@@ -15,7 +15,7 @@ description: Public vulnerability disclosures and exploit research by Ted Thoban
     </div>
     <h3>Unauthenticated denial of service in the Redis service</h3>
     <p>When the Redis service was enabled, an unauthenticated remote attacker could trigger excessive resource allocation and deny service to the Canary honeypot. Thinkst credited Teddy Thobane as the finder.</p>
-    <div class="cve-links"><a href="https://www.cve.org/CVERecord?id=CVE-2026-85220">CVE record ↗</a><a href="https://canary.tools/security-advisories/tc-2026-01.txt">Vendor advisory ↗</a></div>
+    <div class="cve-links"><a href="https://www.cve.org/CVERecord?id=CVE-2026-85220">CVE record ↗</a><a href="https://canary.tools/security-advisories/tc-2026-01.txt">Vendor advisory ↗</a><a href="{{ '/notes/when-a-honeypot-runs-out-of-memory/' | relative_url }}">Technical write-up →</a></div>
   </article>
 
   <article class="cve-entry" id="cve-2026-85219">
@@ -25,7 +25,7 @@ description: Public vulnerability disclosures and exploit research by Ted Thoban
     </div>
     <h3>Memory-exhaustion denial of service in the Redis module</h3>
     <p>The Redis module could retain memory under attacker-controlled protocol conditions, allowing an unauthenticated remote attacker to cause unconstrained memory use and degrade availability. Thinkst credited Teddy Thobane as the finder.</p>
-    <div class="cve-links"><a href="https://www.cve.org/CVERecord?id=CVE-2026-85219">CVE record ↗</a><a href="https://github.com/thinkst/opencanary/security/advisories/GHSA-77jg-5rmj-77jx">Vendor advisory ↗</a></div>
+    <div class="cve-links"><a href="https://www.cve.org/CVERecord?id=CVE-2026-85219">CVE record ↗</a><a href="https://github.com/thinkst/opencanary/security/advisories/GHSA-77jg-5rmj-77jx">Vendor advisory ↗</a><a href="{{ '/notes/when-a-honeypot-runs-out-of-memory/' | relative_url }}">Technical write-up →</a></div>
   </article>
 
   <article class="cve-entry" id="cve-2025-46827">
