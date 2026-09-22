@@ -8,11 +8,11 @@ excerpt: "A practical primer on NX, mprotect(), and position-independent Linux x
 
 I recently found a use-after-free in a network-facing daemon. The bug can be taken all the way to remote code execution, but coordinated disclosure is still in progress, so I cannot identify the project or show the vulnerability-specific chain yet.
 
-That means no protocol details, source locations, object layouts, heap choreography, gadgets, offsets, or working exploit. Those belong in the full write-up after the maintainers have shipped a fix and I have permission to discuss the issue properly.
+That means no protocol details, source locations, object layouts, heap choreography, gadgets, offsets, or working exploit (it's a doozy, though, you'll love it XD). Those belong in the full write-up after the maintainers have shipped a fix and I have permission to discuss the issue properly.
 
 What I can discuss is the part that comes after the target-specific work.
 
-At a high level, the use-after-free gave me a route to instruction-pointer control. The exploit also had to defeat ASLR and the stack canary. I am intentionally skipping the mechanisms used to cross those barriers. The useful general lesson begins at the point where execution can be redirected: how do we turn controlled data into code on a modern Linux process with NX enabled?
+At a high level, the UAF gave me a route to instruction pointer (RIP) control. The exploit also had to defeat ASLR and the stack canary. I am intentionally skipping the mechanisms used to cross those barriers. The useful general lesson begins at the point where execution can be redirected: how do we turn controlled data into code on a modern Linux process with NX enabled?
 
 # The short version
 
@@ -34,22 +34,24 @@ RW memory becomes executable
 Transfer execution
       |
       v
-Shellcode
+Shellcode go brr
 ```
 
-That diagram deliberately hides the interesting target-specific machinery. It says nothing about how the dangling reference was produced, what object was reused, how RIP was reached, how ASLR or the canary were defeated, or where any runtime address came from. It is a map of the final exploitation problem, not a reproduction guide.
+Again, the diagram deliberately hides the interesting target-specific machinery. It says nothing about how the dangling reference was produced, what object was reused, how RIP was reached, how ASLR or the canary were defeated, or where any runtime address came from. It is a map of the final exploitation problem, not a reproduction guide.
 
 # Why NX changes the problem
 
-Historically, memory-corruption exploitation could be almost offensively direct: place machine code in a writable buffer, redirect execution to that buffer, and let the processor do the rest.
+Historically, memory corruption exploitation could be almost laughably direct: place machine code in a writable buffer, redirect execution to that buffer, and let the processor do the rest. GG EZ.
 
-NX - the no-execute bit - separates writable memory from executable memory. A normal stack or heap mapping is generally readable and writable, but not executable. The process can still store arbitrary bytes there; the CPU simply refuses to fetch those bytes as instructions.
+NX (the 'no execute' bit) separates writable memory from executable memory. A normal stack or heap mapping is generally readable and writable, but not executable. The process can still store arbitrary bytes there; the CPU simply refuses to fetch those bytes as instructions.
 
 This is the practical effect of a W^X policy: a page should be writable or executable, but ideally not both. If RIP lands on a non-executable page, the processor raises a protection fault instead of running the payload.
 
 RIP control is therefore not synonymous with code execution. It is a powerful primitive, but the destination still has to contain useful instructions on a page from which the CPU is allowed to execute.
 
-Code-reuse attacks work around this by chaining instructions which already exist in executable mappings. Another option is to use code reuse only long enough to change the permissions on a mapping which already contains attacker-controlled bytes. On Linux, that leads naturally to `mprotect()`.
+Code-reuse attacks (think ROP or ret2libc) work around this by chaining instructions which already exist in executable mappings. This is usually further complicated by ASLR and RELRO, but we'll get into that when I can talk about this in detail.
+
+Another option is to use code reuse only long enough to change the permissions on a mapping which already contains attacker-controlled bytes. On Linux, that leads naturally to `mprotect()`.
 
 # What mprotect() actually does
 
@@ -87,7 +89,7 @@ page_end   = (payload_address + payload_length + page_size - 1)
 page_length = page_end - page_start;
 ```
 
-On Linux x86-64, `mprotect` is syscall 10. An exploit may reach it through a normal imported function, another callable wrapper, or a suitable syscall path already present in executable code. Which option is available is target-dependent, and I am leaving the route used in this research undisclosed.
+On Linux x86-64, `mprotect` is syscall 10. An exploit may reach it through a normal imported function, another callable wrapper, or a suitable syscall path already present in executable code. Which option is available is target-dependent, and I am leaving the route used in this research undisclosed for now.
 
 # The state an exploit needs
 
@@ -98,7 +100,15 @@ Ignoring how each primitive was obtained, a permission-change design needs four 
 3. **Controlled bytes.** The intended machine code must survive in that memory until execution reaches it.
 4. **A callable permission-change path.** The exploit must establish the `mprotect` arguments and invoke it without losing control afterward.
 
-The last clause is easy to underestimate. Finding the bytes for a `syscall` instruction does not necessarily produce a usable gadget. Execution continues after the kernel returns. If the following instruction dereferences a register that now contains the syscall return value, writes through an uncontrolled pointer, or depends on state clobbered by `syscall`, the chain still dies.
+The last clause is easy to underestimate. Finding the bytes for a `syscall` instruction does not necessarily produce a usable gadget. Execution continues after the kernel returns. If the following instruction dereferences a register that now contains the syscall return value, writes through an uncontrolled pointer, or depends on state clobbered by `syscall`, the chain still dies. For example,
+
+```asm
+syscall
+mov [rax], rdi
+ret
+```
+
+If we're making the `mprotect` syscall directly, success returns zero and failure returns a negative error number. (The libc wrapper translates that failure into `-1` and sets `errno`.) Neither result is a valid writable userspace address, so the dereference faults. No pwnage for you.
 
 The continuation matters as much as the instruction you searched for.
 
@@ -330,6 +340,8 @@ The vulnerable application, protocol, affected component, trigger, object lifeti
 
 The project is still working through coordinated disclosure. Publishing those details now could allow readers to identify the software, reproduce the vulnerability, or reconstruct the exploit before users have had a fair chance to patch.
 
-Once remediation is public and I have permission to discuss the case, I plan to extend this article with the full journey: root cause, reachability, exploitation constraints, failed approaches, final chain, and the engineering required to make it reliable across more realistic environments.
+Once remediation is public and I have permission to discuss the case, I plan to extend this article with the full journey: root cause, reachability, exploitation constraints, failed approaches, final chain, and the engineering required to make it reliable across varied environments.
 
 For now, the responsible stopping point is the general technique. This research was performed in a controlled environment and is shared for defensive education and authorised security research only.
+
+Happy Hacking!
