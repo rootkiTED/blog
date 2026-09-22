@@ -308,6 +308,10 @@ Because a flat shellcode binary has no ELF loader around it, testing should be d
 
 The undisclosed exploit travelled a much longer path than the final abstraction suggests. A use-after-free had to become a stable corruption primitive. That primitive had to become reliable control of RIP. ASLR and the stack canary had to be defeated. The process then needed a viable route to `mprotect()`, a correctly aligned page range, intact payload bytes, and an explicit transfer into shellcode.
 
+![Redacted terminal output showing the generic control-flow and permission-change stages completing before a shell connection is established.]({{ site.baseurl }}/assets/img/research/uaf-to-rce-redacted.png)
+
+*A successful lab run. Target-specific object state, addresses, gadget selection, offsets, payload dimensions, and network identifiers have been redacted while coordinated disclosure remains in progress.*
+
 The final shape was simple:
 
 ```text
