@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Making the canary go quiet: CVE-2026-85219 and CVE-2026-85220"
-date: 2026-09-30 18:00:00 +0200
+date: 2026-09-30 16:20:00 +0200
 categories: Vulnerability-Research
 excerpt: "From source review to a full unauthenticated denial of service in the Redis service used by OpenCanary and Thinkst Canary."
 ---
