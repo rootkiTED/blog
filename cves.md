@@ -15,6 +15,7 @@ description: Public vulnerability disclosures and exploit research by Ted Thoban
     </div>
     <h3>Unauthenticated stack buffer overflow in the 9P TWALK handler</h3>
     <p>The 9P implementation did not enforce the protocol limit of 16 path components in a TWALK request. A remote, unauthenticated attacker could supply thousands of components, overflow a fixed-size stack buffer during response construction, and crash the server or potentially execute arbitrary code.</p>
+    <p class="exploit-status"><strong>Exploit developed:</strong> Unauthenticated remote code execution demonstrated in a controlled environment; exploit code is not publicly released.</p>
     <div class="cve-links"><a href="https://www.cve.org/CVERecord?id=CVE-2026-105516">CVE record ↗</a><a href="https://access.redhat.com/security/cve/CVE-2026-105516">Red Hat advisory ↗</a></div>
   </article>
 
@@ -25,6 +26,7 @@ description: Public vulnerability disclosures and exploit research by Ted Thoban
     </div>
     <h3>Unauthenticated use-after-free in the 9P FID lifecycle</h3>
     <p>A race between concurrent write and close operations could free a 9P file identifier and its associated data while another worker continued to use it. A remote, unauthenticated attacker could trigger a crash or potentially execute arbitrary code through attacker-controlled writes to freed heap memory.</p>
+    <p class="exploit-status"><strong>Exploit developed:</strong> Unauthenticated remote code execution demonstrated in a controlled environment; exploit code is not publicly released.</p>
     <div class="cve-links"><a href="https://www.cve.org/CVERecord?id=CVE-2026-105517">CVE record ↗</a><a href="https://access.redhat.com/security/cve/CVE-2026-105517">Red Hat advisory ↗</a></div>
   </article>
 
@@ -35,6 +37,7 @@ description: Public vulnerability disclosures and exploit research by Ted Thoban
     </div>
     <h3>Unauthenticated denial of service in the Redis service</h3>
     <p>When the Redis service was enabled, an unauthenticated remote attacker could trigger excessive resource allocation and deny service to the Canary honeypot. Thinkst credited Teddy Thobane as the finder.</p>
+    <p class="exploit-status"><strong>Exploit developed:</strong> Remote denial of service demonstrated; exploit code is not publicly released.</p>
     <div class="cve-links"><a href="https://www.cve.org/CVERecord?id=CVE-2026-85220">CVE record ↗</a><a href="https://canary.tools/security-advisories/tc-2026-01.txt">Vendor advisory ↗</a><a href="{{ '/notes/when-a-honeypot-runs-out-of-memory/' | relative_url }}">Technical write-up →</a></div>
   </article>
 
@@ -45,6 +48,7 @@ description: Public vulnerability disclosures and exploit research by Ted Thoban
     </div>
     <h3>Memory-exhaustion denial of service in the Redis module</h3>
     <p>The Redis module could retain memory under attacker-controlled protocol conditions, allowing an unauthenticated remote attacker to cause unconstrained memory use and degrade availability. Thinkst credited Teddy Thobane as the finder.</p>
+    <p class="exploit-status"><strong>Exploit developed and published:</strong> A working remote denial-of-service proof of concept is available below.</p>
     <div class="cve-links"><a href="https://www.cve.org/CVERecord?id=CVE-2026-85219">CVE record ↗</a><a href="https://github.com/thinkst/opencanary/security/advisories/GHSA-77jg-5rmj-77jx">Vendor advisory ↗</a><a href="{{ '/notes/when-a-honeypot-runs-out-of-memory/' | relative_url }}">Technical write-up →</a><a href="{{ '/assets/exploits/CVE-2026-85219/opencanaryShutdownExploit.py' | relative_url }}">PoC ↓</a></div>
   </article>
 
@@ -55,6 +59,7 @@ description: Public vulnerability disclosures and exploit research by Ted Thoban
     </div>
     <h3>Session takeover via insufficient HTML sanitization</h3>
     <p>Stored cross-site scripting in event-definition remediation content could expose user session cookies when the required permissions, viewer interaction, and active input conditions were present.</p>
+    <p class="exploit-status"><strong>Exploit developed:</strong> Session-cookie theft was demonstrated during the disclosure; exploit code is not publicly released.</p>
     <div class="cve-links"><a href="https://nvd.nist.gov/vuln/detail/CVE-2025-46827">NVD record ↗</a><a href="https://github.com/Graylog2/graylog2-server/security/advisories/GHSA-76vf-mpmx-777j">Vendor advisory ↗</a></div>
   </article>
 
@@ -65,6 +70,7 @@ description: Public vulnerability disclosures and exploit research by Ted Thoban
     </div>
     <h3>Local privilege escalation through trusted configuration</h3>
     <p>A privileged OpenCanary service executed commands from configuration stored in a user-controlled location, creating a path for a local user to escalate privileges when the daemon was run as root.</p>
+    <p class="exploit-status"><strong>Exploit developed:</strong> Local privilege escalation to root was demonstrated; exploit code is not publicly released.</p>
     <div class="cve-links"><a href="https://nvd.nist.gov/vuln/detail/CVE-2024-48911">NVD record ↗</a><a href="https://github.com/thinkst/opencanary/security/advisories/GHSA-pf5v-pqfv-x8jj">Vendor advisory ↗</a></div>
   </article>
 
@@ -75,6 +81,7 @@ description: Public vulnerability disclosures and exploit research by Ted Thoban
     </div>
     <h3>Arbitrary class loading and instantiation</h3>
     <p>Developed and published a working exploit that turns Graylog’s arbitrary class loading and instantiation primitive into practical code execution.</p>
+    <p class="exploit-status"><strong>Exploit developed and published:</strong> A working code-execution exploit is available in the linked repository.</p>
     <div class="cve-links"><a href="https://nvd.nist.gov/vuln/detail/CVE-2024-24824">NVD record ↗</a><a href="https://github.com/rootkiTED/graylog-cve-2024-24824-exploit">Exploit repository ↗</a></div>
   </article>
 </div>
