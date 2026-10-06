@@ -8,6 +8,26 @@ description: Public vulnerability disclosures and exploit research by Ted Thoban
 <p class="page-lede">Public vulnerability disclosures and exploit research, with links to canonical records and technical references.</p>
 
 <div class="cve-list">
+  <article class="cve-entry" id="cve-2026-105516">
+    <div class="cve-entry-head">
+      <div><p class="cve-product">NFS-Ganesha · Disclosed finding</p><h2>CVE-2026-105516</h2></div>
+      <span class="severity">Critical · 9.8</span>
+    </div>
+    <h3>Unauthenticated stack buffer overflow in the 9P TWALK handler</h3>
+    <p>The 9P implementation did not enforce the protocol limit of 16 path components in a TWALK request. A remote, unauthenticated attacker could supply thousands of components, overflow a fixed-size stack buffer during response construction, and crash the server or potentially execute arbitrary code.</p>
+    <div class="cve-links"><a href="https://www.cve.org/CVERecord?id=CVE-2026-105516">CVE record ↗</a><a href="https://access.redhat.com/security/cve/CVE-2026-105516">Red Hat advisory ↗</a></div>
+  </article>
+
+  <article class="cve-entry" id="cve-2026-105517">
+    <div class="cve-entry-head">
+      <div><p class="cve-product">NFS-Ganesha · Disclosed finding</p><h2>CVE-2026-105517</h2></div>
+      <span class="severity">High · 8.1</span>
+    </div>
+    <h3>Unauthenticated use-after-free in the 9P FID lifecycle</h3>
+    <p>A race between concurrent write and close operations could free a 9P file identifier and its associated data while another worker continued to use it. A remote, unauthenticated attacker could trigger a crash or potentially execute arbitrary code through attacker-controlled writes to freed heap memory.</p>
+    <div class="cve-links"><a href="https://www.cve.org/CVERecord?id=CVE-2026-105517">CVE record ↗</a><a href="https://access.redhat.com/security/cve/CVE-2026-105517">Red Hat advisory ↗</a></div>
+  </article>
+
   <article class="cve-entry" id="cve-2026-85220">
     <div class="cve-entry-head">
       <div><p class="cve-product">Thinkst Canary · Disclosed finding</p><h2>CVE-2026-85220</h2></div>
